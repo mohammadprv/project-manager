@@ -6,6 +6,7 @@ module.exports = class Application {
         this.configDatabase(DB_URL);
         this.configApplication();
         this.createServer(PORT);
+        this.createRoutes();
         this.errorHandler();
     }
     
