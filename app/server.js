@@ -1,3 +1,4 @@
+
 module.exports = class Application {
     #express = require('express');
     #app = this.#express();
@@ -33,12 +34,21 @@ module.exports = class Application {
             return console.log("Connected To Database...");
         })
     }
-
+    
     createRoutes() {
         this.#app.get("/", (req, res, next) => {
             return res.json({
                 message: "This Is A New Express Application"
             })
+        });
+        
+        const { AllRoutes } = require('./routes/router');
+        this.#app.use((err, req, res, next) => {
+            try {
+                this.#app.use(AllRoutes);
+            } catch (error) {
+                next(error);
+            }
         })
     }
     
@@ -49,7 +59,7 @@ module.exports = class Application {
             return res.status(404).json({
                 status: 404,
                 success: false,
-                message: "صفحه مورد نظر یافت",
+                message: "صفحه مورد نظر یافت نشد",
             });
         });
 
