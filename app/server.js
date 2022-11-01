@@ -43,13 +43,13 @@ module.exports = class Application {
         });
         
         const { AllRoutes } = require('./routes/router');
-        this.#app.use((err, req, res, next) => {
-            try {
-                this.#app.use(AllRoutes);
-            } catch (error) {
-                next(error);
-            }
-        })
+        this.#app.use(AllRoutes);
+        // this.#app.use((err, req, res, next) => {
+        //     try {
+        //     } catch (error) {
+        //         next(error);
+        //     }
+        // })
     }
     
     errorHandler() {
