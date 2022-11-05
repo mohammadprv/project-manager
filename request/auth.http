@@ -10,3 +10,27 @@ Content-Type: application/json
     "password": "123456",
     "confirm_password": "123456"
 }
+
+
+
+###login request
+
+Post http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+    "username": "mohammadprv",
+    "password": "123456"
+}
+
+
+###login request
+
+Post http://localhost:3000/auth/login
+Content-Type: application/json
+Authorization: Bearer {{$dotenv TOKEN}}
+
+{
+    "username": "pantea_rezae",
+    "password": "123456"
+}
