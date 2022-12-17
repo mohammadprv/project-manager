@@ -9,7 +9,7 @@ Authorization: Bearer {{$dotenv TOKEN}}
 Content-Type: application/json
 
 {
-    "first_name": "mohammmmmmmmmmmmmmad",
-    "last_name": "peyravi",
-    "skills": ["programmer", "nodejs", "express.js"]
+    "first_name": "pantea",
+    "last_name": "rezaee",
+    "skills": ["programmer", "java script", "HTML-CSS"]
 }
