@@ -11,7 +11,7 @@ class ProjectController {
             return res.status(201).json({
                 status: 201,
                 success: true,
-                message: "پروژه با موفقیت انجام شد"
+                message: "پروژه با موفقیت اضافه شد"
             });
         } catch (error) {
             next(error);
@@ -20,12 +20,13 @@ class ProjectController {
 
     async getAllProject(req, res, next) {
         try {
-            const result = await ProjectModel.find({});
-            if(result.length < 1) throw { status: 200, success: true, message: "هیچ پروژه‌ای وجود ندارد" };
+            const owner = req.user._id;
+            const projects = await ProjectModel.find({ owner });
+            if(projects.length < 1) throw { status: 200, success: true, message: "هیچ پروژه‌ای وجود ندارد" };
             return res.status(200).json({
                 status: 200,
                 success: true,
-                projects: result
+                projects
             });
         } catch (error) {
             next(error);
