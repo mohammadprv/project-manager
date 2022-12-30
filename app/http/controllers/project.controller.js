@@ -66,16 +66,37 @@ class ProjectController {
             next(error);
         }
     }
-
+    
+    async UpdateProject(req, res, next) {
+        try {
+            const owner = req.user._id;
+            const projectID = req.params.id;
+            const project = await ProjectModel.findOne({ owner, _id: projectID });
+            if(!project) throw { status: 404, success: false, message: "پروژه یافت نشد" };
+            let data = { ...req.body };
+            const fields = ["title", "text", "tags"];
+            const badValues = ["", " ", 0, -1, NaN, undefined, [], {}];
+            Object.entries(data).forEach(([key, value]) => {
+                if(!fields.includes(key)) delete data[key];
+                if(badValues.includes(value)) delete data[key];
+            });
+            const updateResult = await ProjectModel.updateOne({ _id: projectID }, { $set: data });
+            if(updateResult.modifiedCount == 0) throw { status: 500, success: false, message: "به روزرسانی پروژه انجام نشد" };
+            return res.status(200).json({
+                status: 200,
+                success: true,
+                message: "به روزرسانی پروژه با موفقیت انجام شد"
+            });
+        } catch (error) {
+            next(error)
+        }
+    }
+    
     getAllProjectOfTeam() {
 
     }
 
     getProjectOfUser() {
-
-    }
-
-    UpdateProject() {
 
     }
 
