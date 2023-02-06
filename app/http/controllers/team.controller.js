@@ -32,13 +32,61 @@ class TeamController {
         }
     }
 
+    async getTeamByID(req, res, next) {
+        try {
+            const teamID = req.params.id;
+            const team = await TeamModel.findById(teamID);
+            if(!team) throw "هیچ تیمی با این شناسه یافت نشد";            
+            return res.status(200).json({
+                status: 200,
+                success: true,
+                team
+            });            
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async getMyTeams(req, res, next) {
+        try {
+            const userID = req.user._id;
+            const teams = await TeamModel.find({
+                $or: [
+                    { owner: userID },
+                    { users: userID }
+                ]
+            });
+            return res.status(200).json({
+                status: 200,
+                success: true,
+                teams
+            })
+        } catch (error) {
+            next(error);
+        }
+    }
+    
+    async removeTeamById(req, res, next) {
+        try {
+            const teamID = req.params.id;
+            const team = await TeamModel.findById(teamID);
+            if(!team) throw "هیچ تیمی با این شناسه یافت نشد";
+            const result = await TeamModel.deleteOne({ _id: teamID });
+            if(result.deletedCount == 0) throw { status: 500, success: false, message: "تیم مورد نظر حذف نشد" };
+            return res.status(200).json({
+                status: 200,
+                success: true,
+                message: "پروژه با موفقیت حذف شد"
+            });            
+        } catch (error) {
+            next(error);
+        }
+    }
+
     inviteUserToTeam() {
 
     }
 
-    removeTeamById() {
-
-    }
 
     updateTeam() {
 

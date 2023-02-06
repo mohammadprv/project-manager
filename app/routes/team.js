@@ -1,6 +1,7 @@
 const { TeamController } = require('../http/controllers/team.controller');
 const { checkLogin } = require('../http/middlewares/autoLogin');
 const { expressValidatorMapper } = require('../http/middlewares/checkError');
+const { mongoIDValidator } = require('../http/validation/public');
 const { createTeamValidator } = require('../http/validation/team');
 
 const router = require('express').Router();
@@ -10,6 +11,15 @@ router.post("/create", checkLogin, createTeamValidator(), expressValidatorMapper
 
 //? Get All Teams
 router.get("/list", TeamController.getListOfTeams);
+
+//? Get My Teams
+router.get("/me", checkLogin, TeamController.getMyTeams);
+
+//? Get Team By ID
+router.get("/:id", checkLogin, mongoIDValidator(), expressValidatorMapper, TeamController.getTeamByID);
+
+//? Delete Team By ID
+router.delete("/remove/:id", checkLogin, mongoIDValidator(), expressValidatorMapper, TeamController.removeTeamById)
 
 module.exports = {
     teamRoutes: router
