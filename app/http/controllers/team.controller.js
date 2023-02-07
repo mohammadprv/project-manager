@@ -1,4 +1,5 @@
 const { TeamModel } = require("../../models/team");
+const { UserModel } = require("../../models/user");
 
 class TeamController {
 
@@ -83,8 +84,52 @@ class TeamController {
         }
     }
 
-    inviteUserToTeam() {
 
+    //? http://anything.com/team/invite/:teamID/:username
+    async inviteUserToTeam(req, res, next) {
+        try {
+            const userID = req.user._id;
+            const { username, teamID } = req.params;
+
+            //? Find Team If Existed
+            const team = await TeamModel.findOne({
+                $or: [{ owner: userID }, { users: userID }],
+                _id: teamID
+            });
+            if(!team) throw { status: 400, success: false, message: "تیمی جهت دعوت کردن افراد یافت نشد" };
+
+            //? Find The User For Sending Invite
+            const user = await UserModel.findOne({ username });
+            if(!user) throw { status: 400, success: false, message: "کاربری جهت دعوت یافت نشد" };
+
+            //? If The User Already Invited To Team
+            const invitedUser = await TeamModel.findOne({
+                $or: [{ owner: user._id }, { users: user._id }],
+                _id: teamID
+            });
+            if(invitedUser) throw { status: 400, success: false, message: "کاربر مورد نظر قبلا به تیم دعوت شده است" };
+
+            const request = {
+                caller: req.user.username,
+                requestDate: new Date(),
+                teamID,
+                requestStatus: "pending"
+            }
+
+            const updateUserResult = await UserModel.updateOne({ username }, {
+                $push: { invitation: request }
+            });
+
+            if(updateUserResult.modifiedCount == 0) throw { status: 500, success: false, message: "ثبت درخواست دعوت با مشکل مواجه شد" };
+            return res.status(200).json({
+                status: 200,
+                success: true,
+                message: "ثبت درخواست با موفقیت انجام شد"
+            })
+
+        } catch (error) {
+            next(error);
+        }
     }
 
 

@@ -18,6 +18,9 @@ router.get("/me", checkLogin, TeamController.getMyTeams);
 //? Get Team By ID
 router.get("/:id", checkLogin, mongoIDValidator(), expressValidatorMapper, TeamController.getTeamByID);
 
+//? Invite User To Team
+router.get("/invite/:teamID/:username", checkLogin, TeamController.inviteUserToTeam);
+
 //? Delete Team By ID
 router.delete("/remove/:id", checkLogin, mongoIDValidator(), expressValidatorMapper, TeamController.removeTeamById)
 
