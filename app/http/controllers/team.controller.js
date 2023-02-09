@@ -132,7 +132,6 @@ class TeamController {
         }
     }
 
-
     updateTeam() {
 
     }
@@ -144,5 +143,6 @@ class TeamController {
 }
 
 module.exports = {
+    
     TeamController: new TeamController()       
 }

@@ -57,6 +57,18 @@ class UserController {
         }
     }
 
+    async getAllUsersInvitations(req, res, next) {
+        try {
+            const userID = req.user._id;
+            const invitations = await UserModel.findById(userID, { invitations: 1 });
+            return res.status(200).json({
+                invitations
+            })
+        } catch (error) {
+            next(error);
+        }
+    }
+
     addSkills() {
 
     }

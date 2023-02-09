@@ -16,6 +16,10 @@ router.post("/profile", checkLogin, expressValidatorMapper, UserController.editP
 //? Upload Profile Image
 router.post("/profile-image", upload_multer.single("image"),  profileImageValidator(), checkLogin, expressValidatorMapper, UserController.uploadProfileImage);
 
+//? Get All Invitations
+router.get("/invitations", checkLogin, UserController.getAllUsersInvitations);
+
+
 module.exports = {
     userRoutes: router
 }
