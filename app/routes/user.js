@@ -19,6 +19,9 @@ router.post("/profile-image", upload_multer.single("image"),  profileImageValida
 //? Get All Invitations
 router.get("/invitations", checkLogin, UserController.getAllUsersInvitations);
 
+//? Get Invitations By Status
+router.get("/invitations/:status", checkLogin, UserController.getUserInvitationByStatus);
+
 
 module.exports = {
     userRoutes: router
